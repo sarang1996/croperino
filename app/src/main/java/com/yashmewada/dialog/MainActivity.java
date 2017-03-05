@@ -6,6 +6,7 @@ import android.database.Observable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.demo_image);
 
-        new CroperinoConfig("IMG_" + System.currentTimeMillis() + ".jpg", "/punchit", "/sdcard/punchit");
+        new CroperinoConfig("IMG_" + System.currentTimeMillis() + ".jpg", "/Punchit/", "/sdcard/Punchit/");
         CroperinoFileUtil.verifyStoragePermissions(this);
         CroperinoFileUtil.setupDirectory(MainActivity.this);
     }
@@ -49,11 +50,13 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     CroperinoFileUtil.newGalleryFile(data, MainActivity.this);
                     Croperino.runCropImage(CroperinoFileUtil.getmFileTemp(), MainActivity.this, false, 1, 2, 0, 0);
+                    Log.d("FILE", "onActivityResult: " + CroperinoFileUtil.getmFileTemp().getAbsolutePath());
                 }
                 break;
             case CroperinoConfig.REQUEST_CROP_PHOTO:
                 if (resultCode == Activity.RESULT_OK) {
                     Uri i = Uri.fromFile(CroperinoFileUtil.getmFileTemp());
+                    Log.d("FILE", "onActivityResult: " + CroperinoFileUtil.getmFileTemp().getAbsolutePath());
                     imageView.setImageURI(i);
                     //Do saving / uploading of photo method here.
                     //The image file can always be retrieved via CroperinoFileUtil.getmFileTemp()
